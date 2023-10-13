@@ -4,7 +4,7 @@ exports.getTodos = async (req, res) => {
     const todo = JSON.parse(fs.readFileSync("db.json")).todos;
     res.status(200).json(todo);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(409).json({ message: error.message });
   }
 };
 
