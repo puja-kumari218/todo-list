@@ -1,13 +1,12 @@
-import { Button, Checkbox, Divider, List, Modal } from "antd";
+import { Button, Checkbox, List, Modal } from "antd";
 import Card from "./components/card";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import todos from "./api/todos";
 import TextArea from "antd/es/input/TextArea";
 import toast from "react-hot-toast";
+
 const PaginationContainer = () => {
-  const [modal, setModal] = useState(false);
-  const [modalData, setModalData] = useState({});
+  // -------------------------------------------- TODO STATE--------------------------------------------
   const [data, setData] = useState([]);
   const fetchTodos = () => {
     todos.getTodos().then((res) => {
@@ -20,6 +19,12 @@ const PaginationContainer = () => {
   useEffect(() => {
     fetchTodos();
   }, []);
+
+  // -------------------------------------------- MODAL STATE--------------------------------------------
+  const [modal, setModal] = useState(false);
+  const [modalData, setModalData] = useState({});
+
+  // -------------------------------------------- MODAL HANDLERS--------------------------------------------
   const handleAdd = () => {
     setModal(false);
     todos
@@ -33,6 +38,7 @@ const PaginationContainer = () => {
         toast.success("Todo Added");
       });
   };
+
   const handleEdit = () => {
     setModal(false);
     todos
@@ -47,17 +53,20 @@ const PaginationContainer = () => {
         toast.success("Todo Updated");
       });
   };
+
   const handleDelete = (id) => {
     todos.deleteTodo(id).then((res) => {
       fetchTodos();
       toast.success("Todo Deleted");
     });
   };
+
   const handleCancel = () => {
     setModal(false);
     setModalData({});
   };
 
+  // -------------------------------------------- TOGGLE HANDLERS--------------------------------------------
   const toggleComplete = (todo) => {
     todos
       .updateTodo({
