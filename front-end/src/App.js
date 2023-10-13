@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useEffect, useState } from "react";
+import todos from "./api/todos";
+import PaginationContainer from "./pagination-container";
 function App() {
+  const [data, setData] = useState([]);
+  const fetchTodos = () => {
+    todos.getTodos().then((res) => {
+      if (res) {
+        setData(res?.data?.sort((a, b) => a.completed - b.completed));
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="flex flex-col h-max-screen w-full items-center gap-4 p-4">
+      <h1 className="text-3xl h-20">To-do App</h1>
+      <PaginationContainer data={data} />
     </div>
   );
 }
