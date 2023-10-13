@@ -47,3 +47,14 @@ exports.deleteTodos = async (req, res) => {
     res.status(409).json({ message: error.message });
   }
 };
+
+exports.getTodoById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const todos = JSON.parse(fs.readFileSync("db.json")).todos;
+    const todo = todos.find((todo) => todo.id === id);
+    res.status(200).json(todo);
+  } catch (error) {
+    res.status(409).json({ message: error.message });
+  }
+}
