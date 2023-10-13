@@ -54,27 +54,6 @@
       "title": "hello",
       "completed": false,
       "id": 22
-    },
-    {
-      "title": "hh",
-      "completed": false,
-      "id": 23
-    },
-    {
-      "completed": false,
-      "id": 24
-    },
-    {
-      "completed": false,
-      "id": 25
-    },
-    {
-      "completed": false,
-      "id": 26
-    },
-    {
-      "completed": false,
-      "id": 27
     }
   ]
 }

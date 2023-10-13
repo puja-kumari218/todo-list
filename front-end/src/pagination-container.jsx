@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 import todos from "./api/todos";
 import TextArea from "antd/es/input/TextArea";
 import toast from "react-hot-toast";
-import { Input } from 'antd'; 
+import { Input } from "antd";
 
 const PaginationContainer = () => {
   // -------------------------------------------- TODO STATE--------------------------------------------
   const [data, setData] = useState([]);
+  const [filterData, setFilterData] = useState([]);
   const fetchTodos = () => {
     todos.getTodos().then((res) => {
       if (res) {
-        setData(res?.data?.sort((a, b) => a.completed - b.completed));
+        let dataArray = res?.data?.sort((a, b) => a.completed - b.completed);
+        setData(dataArray);
+        setFilterData(dataArray);
       }
     });
   };
@@ -31,7 +34,7 @@ const PaginationContainer = () => {
     todos
       .addTodo({
         title: modalData?.title,
-        id: modalData?.id, 
+        id: modalData?.id,
         completed: false,
       })
       .then((res) => {
@@ -82,17 +85,35 @@ const PaginationContainer = () => {
       });
   };
 
+  // -------------------------------------------- FILTER HANDLERS--------------------------------------------
+  const handleFilter = (e) => {
+    let input = e.target.value;
+    if (input === "") {
+      setFilterData(data);
+      return;
+    }
+
+    let filter = data.filter((item) => {
+      return item.title.toLowerCase().includes(input.toLowerCase());
+    });
+
+    setFilterData(filter);
+  };
+
   return (
     <Card
       className="h-content w-full md:w-[50%] border rounded-lg"
       actions={
-        <Button
-          onClick={() => {
-            setModal(true);
-          }}
-        >
-          Add
-        </Button>
+        <div className="flex items-center gap-2">
+          <Input onChange={handleFilter} placeholder="Search" />
+          <Button
+            onClick={() => {
+              setModal(true);
+            }}
+          >
+            Add
+          </Button>
+        </div>
       }
     >
       <List
@@ -100,7 +121,7 @@ const PaginationContainer = () => {
         pagination={{
           defaultPageSize: 10,
         }}
-        dataSource={data}
+        dataSource={filterData}
         itemLayout="horizontal"
         renderItem={(item) => (
           <List.Item
@@ -178,14 +199,14 @@ const PaginationContainer = () => {
         ]}
       >
         <div className="flex flex-col mt-4 gap-2">
-        <span className="text-sm">ID</span>
-    <Input
+          {/* <span className="text-sm">ID</span> */}
+          {/* <Input
       value={modalData?.id}
       // disabled={!modalData?.id} // Disable input for existing items
       onChange={(e) => {
         setModalData({ ...modalData, id: e.target.value });
       }}
-    />
+    /> */}
           <span className="text-sm">Title</span>
           <TextArea
             value={modalData?.title}
